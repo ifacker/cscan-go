@@ -4,10 +4,10 @@ import (
 	"cscan/config"
 	"cscan/util/file"
 	"cscan/util/identify"
-	"cscan/util/log"
 	"cscan/util/view"
 	"fmt"
 	"github.com/gookit/color"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -43,8 +43,10 @@ func loadConfig() *config.IpOptions {
 					min, err := strconv.Atoi(stmps[0])
 					max, err := strconv.Atoi(stmps[1])
 					if err != nil {
-						log.Print(err)
-						view.PrintlnError("输入的 port 格式有误，请重试！案例：1-65535")
+						if config.Debug {
+							log.Println(err)
+							view.PrintlnError("输入的 port 格式有误，请重试！案例：1-65535")
+						}
 						os.Exit(1)
 					}
 					for i := min; i <= max; i++ {
@@ -53,8 +55,10 @@ func loadConfig() *config.IpOptions {
 				} else {
 					port, err := strconv.Atoi(s)
 					if err != nil {
-						log.Print(err)
-						view.PrintlnError("输入的 port 格式有误，请重试！")
+						if config.Debug {
+							log.Println(err)
+							view.PrintlnError("输入的 port 格式有误，请重试！")
+						}
 						os.Exit(1)
 					}
 					ports = append(ports, port)
@@ -141,8 +145,8 @@ func loadConfig() *config.IpOptions {
 		}(c)
 		for _, text := range texts {
 			result, err := identify.IpRange(text)
-			if err != nil {
-				log.Print(err)
+			if err != nil && config.Debug {
+				log.Println(err)
 				continue
 			}
 			ips = append(ips, result...)
@@ -155,8 +159,8 @@ func loadConfig() *config.IpOptions {
 	// 如：192.168.1.1 | 192.168.1.1/24 | 192.168.1.1-20
 	if config.IpInfo != "" {
 		result, err := identify.IpRange(config.IpInfo)
-		if err != nil {
-			log.Print(err)
+		if err != nil && config.Debug {
+			log.Println(err)
 			os.Exit(1)
 		}
 		ips = append(ips, result...)
@@ -165,13 +169,70 @@ func loadConfig() *config.IpOptions {
 	return ipOptions
 }
 
+// 初始化过滤输出端口
+func filterInit() {
+
+	if config.Filter == "" {
+		return
+	}
+
+	// 识别分隔符关键字符的内部方法
+	identifyKeywords := func(keyword string) {
+		filterStatusCode := strings.Split(strings.TrimSpace(config.Filter), keyword)
+		for _, s := range filterStatusCode {
+			s = strings.TrimSpace(s)
+			// 判断 s 里是否含有 "-"
+			if strings.Contains(s, "-") {
+				stmps := strings.Split(s, "-")
+				min, err := strconv.Atoi(stmps[0])
+				max, err := strconv.Atoi(stmps[1])
+				if err != nil {
+					if config.Debug {
+						log.Println(err)
+						view.PrintlnError("输入的 filter 格式有误，请重试！案例：300-500")
+					}
+					os.Exit(1)
+				}
+				for i := min; i <= max; i++ {
+					config.Filters = append(config.Filters, i)
+				}
+			} else {
+				port, err := strconv.Atoi(s)
+				if err != nil {
+					if config.Debug {
+						log.Println(err)
+						view.PrintlnError("输入的 filter 格式有误，请重试！")
+					}
+					os.Exit(1)
+				}
+				config.Filters = append(config.Filters, port)
+			}
+		}
+	}
+
+	if strings.Contains(config.Filter, ",") {
+		identifyKeywords(",")
+	} else if strings.Contains(config.Filter, ";") {
+		identifyKeywords(";")
+	} else {
+		identifyKeywords(" ")
+	}
+}
+
 // 端口扫描
 func portScan(ipOptions *config.IpOptions) {
 	PortScans(ipOptions)
 }
 
+// web 扫描
+func webScan(ipOptions *config.IpOptions) {
+	WebScans(ipOptions)
+}
+
 func StartScans() {
 	ipOptions := loadConfig()
+	filterInit()
 	portScan(ipOptions)
-	fmt.Println(ipOptions)
+	webScan(ipOptions)
+	//fmt.Println(ipOptions)
 }

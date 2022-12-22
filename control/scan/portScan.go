@@ -2,18 +2,20 @@ package scan
 
 import (
 	"cscan/config"
-	"cscan/util/log"
+	"cscan/control/output"
 	"cscan/util/view"
 	"fmt"
+	"log"
 	"net"
+	"strings"
 	"sync"
 )
 
 // 传入 ipOption，检查端口有没有开放
 func PortScan(ipOption *config.IpOption) {
 	conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", ipOption.Ip, ipOption.Port), config.TimeOut)
-	if err != nil {
-		log.Print(err)
+	if err != nil && config.Debug {
+		log.Println(err)
 		ipOption.Status = false
 	} else {
 		if conn != nil {
@@ -42,6 +44,16 @@ func PortScans(ipOptions *config.IpOptions) {
 					view.PrintlnSuccess(fmt.Sprintf("%s:%d --> open", ipOption.Ip, ipOption.Port))
 				} else if config.ViewAll {
 					view.PrintlnFailed(fmt.Sprintf("%s:%d --> close", ipOption.Ip, ipOption.Port))
+				}
+
+				// 导出
+				if config.OutPutType != "" {
+					if strings.Contains(config.OutPutType, ".csv") {
+						path := config.OutPutType[:strings.Index(config.OutPutType, ".")] + "_portScan.csv"
+						output.OutputFile(path, &ipOption, config.MODE_PORT)
+					} else {
+						output.OutputFile(config.OutPutType, &ipOption, config.MODE_PORT)
+					}
 				}
 
 				// 测试代码

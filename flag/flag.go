@@ -16,6 +16,8 @@ func Init() {
 	flag.StringVar(&config.ForbidPorts, "fp", "", "forbid ports 指定端口扫描，禁用默认端口（支持 \",\" 逗号 \" \" 空格 \"；\" 分号分隔）")
 	flag.StringVar(&config.IpFilePath, "l", "", "需要导入的 IP 文件")
 	flag.StringVar(&config.IpInfo, "i", "", "需要扫描的 IP、IP段 或 IP范围，如：192.168.1.1, 192.168.1.1/24, 192.168.1.1-20（仅支持 \",\" 逗号分隔）")
+	flag.StringVar(&config.Filter, "f", "", "filter 过滤保留需要的状态码，并打印输出（支持 \",\" 逗号 \" \" 空格 \"；\" 分号分隔）")
+	flag.StringVar(&config.OutPutType, "o", "", "导出检测的结果，目前支持的格式：txt、csv。如：-o outfile.txt、-o outfile.csv")
 
 	flag.Parse()
 }

@@ -18,14 +18,14 @@ var (
 	Proxy = ""
 
 	// 超时时间
-	TimeOutSet = 10
+	TimeOutSet = 7
 	TimeOut    = time.Second * time.Duration(TimeOutSet)
 
 	// Debug 模式开关
 	Debug = false
 
 	// 最大线程数
-	ThreadMax = 50
+	ThreadMax = 100
 
 	// 展示所有细节
 	ViewAll = false
@@ -41,4 +41,11 @@ var (
 
 	// IP 或 IP 段
 	IpInfo string
+
+	// 过滤保留需要的状态码
+	Filter  string
+	Filters []int
+
+	// 输出文件的类型
+	OutPutType string
 )

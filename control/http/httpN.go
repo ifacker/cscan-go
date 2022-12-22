@@ -3,8 +3,8 @@ package http
 import (
 	"crypto/tls"
 	"cscan/config"
-	"cscan/util/log"
 	"github.com/ifacker/myutil"
+	"log"
 	"net/http"
 )
 
@@ -19,8 +19,8 @@ func NewClient() *http.Client {
 	}
 
 	err := myutil.InitProxy(tr, config.Proxy)
-	if err != nil {
-		log.Print(err)
+	if err != nil && config.Debug {
+		log.Println(err)
 	}
 	httpClient := &http.Client{
 		Transport: tr,
