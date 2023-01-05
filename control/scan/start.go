@@ -2,6 +2,7 @@ package scan
 
 import (
 	"cscan/config"
+	"cscan/control/crack"
 	"cscan/util/file"
 	"cscan/util/identify"
 	"cscan/util/view"
@@ -229,10 +230,19 @@ func webScan(ipOptions *config.IpOptions) {
 	WebScans(ipOptions)
 }
 
+// 对一些特殊端口进行暴力破解
+func crackStart(ipOption *config.IpOptions) {
+	if config.NotCrack {
+		return
+	}
+	crack.StartCrack(ipOption)
+}
+
 func StartScans() {
 	ipOptions := loadConfig()
 	filterInit()
 	portScan(ipOptions)
 	webScan(ipOptions)
+	crackStart(ipOptions)
 	//fmt.Println(ipOptions)
 }

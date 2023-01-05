@@ -16,12 +16,12 @@ func PortScan(ipOption *config.IpOption) {
 	conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", ipOption.Ip, ipOption.Port), config.TimeOut)
 	if err != nil && config.Debug {
 		log.Println(err)
-		ipOption.Status = false
+		ipOption.PortOpenStatus = false
 	} else {
 		if conn != nil {
-			ipOption.Status = true
+			ipOption.PortOpenStatus = true
 		} else {
-			ipOption.Status = false
+			ipOption.PortOpenStatus = false
 		}
 	}
 }
@@ -40,7 +40,7 @@ func PortScans(ipOptions *config.IpOptions) {
 				ipOptions.IpOption = append(ipOptions.IpOption, &ipOption)
 
 				// 打印输出
-				if ipOption.Status {
+				if ipOption.PortOpenStatus {
 					view.PrintlnSuccess(fmt.Sprintf("%s:%d --> open", ipOption.Ip, ipOption.Port))
 				} else if config.ViewAll {
 					view.PrintlnFailed(fmt.Sprintf("%s:%d --> close", ipOption.Ip, ipOption.Port))
@@ -58,7 +58,7 @@ func PortScans(ipOptions *config.IpOptions) {
 
 				// 测试代码
 				//time.Sleep(1 * time.Second)
-				//fmt.Printf("%s:%d --> %v\n", ipOption.Ip, ipOption.Port, ipOption.Status)
+				//fmt.Printf("%s:%d --> %v\n", ipOption.Ip, ipOption.Port, ipOption.PortOpenStatus)
 
 				wg.Done()
 				<-ThreadMaxChan

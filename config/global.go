@@ -8,10 +8,36 @@ var Ports = []int{80, 81, 82, 83, 84, 85, 86, 87, 89, 88, 443, 8443, 7001, 7080,
 	1521, 3306, 3389, 3399, 6379, 8009, 9200, 11211, 27017, 50070}
 
 // 扫描特殊端口
-var Ports_other = []int{21, 22, 445, 1100, 1433, 1434, 1521, 3306, 3389, 3399, 6379, 8009, 9200, 11211, 27017, 50070}
+// var Ports_other = []int{21, 22, 445, 1100, 1433, 1434, 1521, 3306, 3389, 3399, 6379, 8009, 9200, 11211, 27017, 50070}
+var PostsCrackMap = map[string]int{
+	"ssh":       22,
+	"mssql":     1433,
+	"mysql":     3306,
+	"ftp":       21,
+	"smb":       445,
+	"memcached": 11211,
+	"mongodb":   27017,
+	"oracle":    1521,
+	"postgres":  5432,
+	"redis":     6379,
+	"rdp":       3389,
+}
+
+// 用户名字典
+//var Userdict = map[string][]string{
+//	"ftp":        {"ftp", "admin", "www", "web", "root", "db", "wwwroot", "data"},
+//	"mysql":      {"root", "mysql"},
+//	"mssql":      {"sa", "sql"},
+//	"smb":        {"administrator", "admin", "guest"},
+//	"rdp":        {"administrator", "admin", "guest"},
+//	"postgresql": {"postgres", "admin"},
+//	"ssh":        {"root", "admin", "kali", "parrot", "test"},
+//	"mongodb":    {"root", "admin"},
+//	"oracle":     {"sys", "system", "admin", "test", "web", "orcl"},
+//}
 
 // UA
-var User_Agent = []string{"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.73 Safari/537.36"}
+//var User_Agent = []string{"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.73 Safari/537.36"}
 
 var (
 	// 代理
@@ -48,4 +74,7 @@ var (
 
 	// 输出文件的类型
 	OutPutType string
+
+	// 禁用暴力破解功能
+	NotCrack = false
 )

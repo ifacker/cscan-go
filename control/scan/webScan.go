@@ -105,7 +105,7 @@ func WebScans(ipOptions *config.IpOptions) {
 	}
 
 	for _, option := range ipOptions.IpOption {
-		if !option.Status {
+		if !option.PortOpenStatus {
 			continue
 		}
 		wg.Add(1)

@@ -21,7 +21,7 @@ func OutputFile(filepath string, ipOption *config.IpOption, mode int) {
 		printTmp := ""
 		switch mode {
 		case config.MODE_PORT:
-			if ipOption.Status {
+			if ipOption.PortOpenStatus {
 				printTmp += fmt.Sprintf("%s,%d,open\n", ipOption.Ip, ipOption.Port)
 			} else {
 				//printTmp += fmt.Sprintf("%s,%d,close\n", ipOption.Ip, ipOption.Port)
@@ -31,13 +31,14 @@ func OutputFile(filepath string, ipOption *config.IpOption, mode int) {
 			printTmp += fmt.Sprintf("%s,%d,%s,%s,%s,%d,%s\n", ipOption.WebInfo.Url, ipOption.WebInfo.Code, ipOption.WebInfo.Title, ipOption.WebInfo.Server, ipOption.WebInfo.XPoweredBy, ipOption.WebInfo.Len, ipOption.WebInfo.Url302Jump)
 			file.WriteFile(filepath, []byte(printTmp))
 		case config.MODE_CRACK:
-			// 待开发...
+			printTmp += fmt.Sprintf("%s,%d,%s,%s,%s\n", ipOption.Ip, ipOption.Port, ipOption.CrackInfo.UserName, ipOption.CrackInfo.Password, ipOption.CrackInfo.Deal)
+			file.WriteFile(filepath, []byte(printTmp))
 		}
 	} else {
 		printTmp := ""
 		switch mode {
 		case config.MODE_PORT:
-			if ipOption.Status {
+			if ipOption.PortOpenStatus {
 				printTmp += fmt.Sprintf("%s:%d --> open\n", ipOption.Ip, ipOption.Port)
 			} else {
 				//printTmp += fmt.Sprintf("%s:%d --> close\n", ipOption.Ip, ipOption.Port)
@@ -47,7 +48,8 @@ func OutputFile(filepath string, ipOption *config.IpOption, mode int) {
 			printTmp += fmt.Sprintf("%s\t%d\t%s\t%s\t%s\t%d\t%s\n", ipOption.WebInfo.Url, ipOption.WebInfo.Code, ipOption.WebInfo.Title, ipOption.WebInfo.Server, ipOption.WebInfo.XPoweredBy, ipOption.WebInfo.Len, ipOption.WebInfo.Url302Jump)
 			file.WriteFile(filepath, []byte(printTmp))
 		case config.MODE_CRACK:
-			// 待开发...
+			printTmp += fmt.Sprintf("%s\t%d\t%s\t%s\t%s\n", ipOption.Ip, ipOption.Port, ipOption.CrackInfo.UserName, ipOption.CrackInfo.Password, ipOption.CrackInfo.Deal)
+			file.WriteFile(filepath, []byte(printTmp))
 		}
 	}
 }

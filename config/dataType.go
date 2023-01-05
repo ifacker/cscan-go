@@ -19,13 +19,17 @@ type WebInfo struct {
 
 // CrackInfo 要爆破的端口的信息
 type CrackInfo struct {
+	UserName string
+	Password string
+	Deal     string
 }
 
 type IpOption struct {
-	Ip      string
-	Port    int
-	Status  bool // 端口开放状态
-	WebInfo WebInfo
+	Ip             string
+	Port           int
+	PortOpenStatus bool // 端口开放状态
+	WebInfo        WebInfo
+	CrackInfo      CrackInfo
 }
 
 type IpOptions struct {

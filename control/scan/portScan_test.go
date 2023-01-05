@@ -9,7 +9,7 @@ import (
 func TestPortScan(t *testing.T) {
 	ipOption := config.IpOption{Ip: "localhost", Port: 1080}
 	PortScan(&ipOption)
-	if ipOption.Status {
+	if ipOption.PortOpenStatus {
 		fmt.Println("open")
 	} else {
 		fmt.Println("close")
@@ -26,6 +26,6 @@ func TestPortScans(t *testing.T) {
 	PortScans(&ipOptions)
 	fmt.Println("--------")
 	for _, option := range ipOptions.IpOption {
-		fmt.Printf("%s:%d --> %v\n", option.Ip, option.Port, option.Status)
+		fmt.Printf("%s:%d --> %v\n", option.Ip, option.Port, option.PortOpenStatus)
 	}
 }
