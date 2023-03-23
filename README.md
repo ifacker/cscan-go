@@ -124,5 +124,5 @@ Cscan-Go 一款主要用来平替 cscan(python版) 的，本人也很喜欢使�
 4. 暂时想不到了，等想到了再补充...
 
 ---
-最后感谢 JetBrains 的支持
-<img src="img/logo2.svg">
+###### 最后感谢 JetBrains 的支持
+![GoLand logo](https://resources.jetbrains.com/storage/products/company/brand/logos/GoLand.svg)
