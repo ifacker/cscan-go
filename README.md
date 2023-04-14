@@ -124,5 +124,8 @@ Cscan-Go 一款主要用来平替 cscan(python版) 的，本人也很喜欢使�
 4. 暂时想不到了，等想到了再补充...
 
 ---
+## Star History
 
+[![Star History Chart](https://api.star-history.com/svg?repos=ifacker/cscan-go&type=Date)](https://star-history.com/#ifacker/cscan-go&Date)
+--- 
 ![GoLand logo](https://resources.jetbrains.com/storage/products/company/brand/logos/GoLand.svg)
