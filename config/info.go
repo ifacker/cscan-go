@@ -4,4 +4,4 @@ package config
 const author = "ifacker"
 
 // 版本
-const version = "1.2.1"
+const version = "1.2.2"
