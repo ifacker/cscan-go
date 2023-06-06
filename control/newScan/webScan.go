@@ -124,12 +124,14 @@ func webScanPrint(ipOption *config.IpOption) {
 // 导出结果
 func webScanOutput(ipOption *config.IpOption) {
 	// 导出
-	if config.OutPutType != "" {
-		if strings.Contains(config.OutPutType, ".csv") {
-			path := config.OutPutType[:strings.Index(config.OutPutType, ".")] + "_webScan.csv"
-			output.OutputFile(path, ipOption, config.MODE_WEB)
-		} else {
-			output.OutputFile(config.OutPutType, ipOption, config.MODE_WEB)
+	if ipOption.WebInfo.Code != 0 {
+		if config.OutPutType != "" {
+			if strings.Contains(config.OutPutType, ".csv") {
+				path := config.OutPutType[:strings.Index(config.OutPutType, ".")] + "_webScan.csv"
+				output.OutputFile(path, ipOption, config.MODE_WEB)
+			} else {
+				output.OutputFile(config.OutPutType, ipOption, config.MODE_WEB)
+			}
 		}
 	}
 }
