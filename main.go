@@ -2,7 +2,7 @@ package main
 
 import (
 	"cscan/config"
-	"cscan/control/scan"
+	"cscan/control/newScan"
 	"cscan/flag"
 	"fmt"
 )
@@ -17,5 +17,6 @@ func init() {
 }
 
 func main() {
-	scan.StartScans()
+	//scan.StartScans()
+	newScan.NewStartScans()
 }

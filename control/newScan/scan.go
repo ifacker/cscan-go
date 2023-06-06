@@ -1,33 +1,17 @@
-package scan
+package newScan
 
 import (
 	"cscan/config"
 	"cscan/control/output"
 	"cscan/util/view"
 	"fmt"
-	"log"
-	"net"
+	"github.com/gookit/color"
 	"strings"
 	"sync"
 )
 
-// 传入 ipOption，检查端口有没有开放
-func PortScan(ipOption *config.IpOption) {
-	conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", ipOption.Ip, ipOption.Port), config.TimeOut)
-	if err != nil && config.Debug {
-		log.Println(err)
-		ipOption.PortOpenStatus = false
-	} else {
-		if conn != nil {
-			ipOption.PortOpenStatus = true
-		} else {
-			ipOption.PortOpenStatus = false
-		}
-	}
-}
-
 // 批量扫描端口
-func PortScans(ipOptions *config.IpOptions) {
+func scan(ipOptions *config.IpOptions) {
 	var ThreadMaxChan = make(chan int, config.ThreadMax)
 	wg := &sync.WaitGroup{}
 	for _, port := range ipOptions.Ports {
@@ -39,6 +23,8 @@ func PortScans(ipOptions *config.IpOptions) {
 				PortScan(&ipOption)
 				if ipOption.PortOpenStatus {
 					ipOptions.IpOption = append(ipOptions.IpOption, &ipOption)
+					// 对 web 进行扫描
+					WebScan(&ipOption)
 				}
 
 				// 打印输出
@@ -69,4 +55,18 @@ func PortScans(ipOptions *config.IpOptions) {
 	}
 	close(ThreadMaxChan)
 	wg.Wait()
+}
+
+// 对 IP 进行端口扫描，http检测，以及暴力破解
+func Scans(ipOptions *config.IpOptions) {
+	scan(ipOptions)
+
+	// 扫描好后的资产进行打印
+	color.C256(226).Printf("\n\n------ web 页面识别结果：------\n\n")
+	for _, ipOption := range ipOptions.IpOption {
+		webScanPrint(ipOption)
+	}
+
+	crackStart(ipOptions)
+
 }
