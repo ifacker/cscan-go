@@ -1,6 +1,6 @@
 module cscan
 
-go 1.19
+go 1.20
 
 require (
 	github.com/EDDYCJY/fake-useragent v0.2.0
@@ -9,7 +9,7 @@ require (
 	github.com/dlclark/regexp2 v1.7.0
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/gookit/color v1.5.2
-	github.com/ifacker/myutil v1.0.6
+	github.com/ifacker/myutil v1.1.7
 	github.com/jlaffaye/ftp v0.1.0
 	github.com/stacktitan/smb v0.0.0-20190531122847-da9a425dceb8
 	golang.org/x/crypto v0.0.0-20220829220503-c86fa9a7ed90

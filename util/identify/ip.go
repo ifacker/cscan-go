@@ -78,3 +78,15 @@ func IpRange(srcIp string) ([]string, error) {
 	}
 	return destIps, nil
 }
+
+func DomainRegex(srcDomain string) ([]string, error) {
+	// 确认域名的格式
+	results, err := regex2.Regexp2SimpleUse(srcDomain, "[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\\.?")
+	if err != nil || len(results) <= 0 {
+		return nil, err
+	}
+	if len(results) <= 0 {
+		return nil, errors.New("输入的域名异常 或 未识别到域名 ！")
+	}
+	return results, nil
+}

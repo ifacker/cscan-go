@@ -7,6 +7,7 @@ import (
 	"cscan/util/view"
 	"fmt"
 	"github.com/gookit/color"
+	"github.com/ifacker/myutil"
 	"log"
 	"os"
 	"strconv"
@@ -118,7 +119,8 @@ func loadConfig() *config.IpOptions {
 	ipOptions.Ports = ports
 
 	// IP识别代码块
-	var ips []string
+	//var ips []string
+	var ips = make(myutil.Set)
 
 	// -l 识别 IP 文件
 	if config.IpFilePath != "" {
@@ -144,12 +146,20 @@ func loadConfig() *config.IpOptions {
 			wg.Done()
 		}(c)
 		for _, text := range texts {
-			result, err := identify.IpRange(text)
+			resultDomain, err := identify.DomainRegex(text)
 			if err != nil && config.Debug {
 				log.Println(err)
-				continue
 			}
-			ips = append(ips, result...)
+			ips.AddAll(resultDomain)
+			resultIp, err := identify.IpRange(text)
+			if err != nil && config.Debug {
+				log.Println(err)
+			}
+			//ips = append(ips, resultIp...)
+			ips.AddAll(resultIp)
+		}
+		if len(ips) <= 0 {
+			os.Exit(1)
 		}
 		c <- true
 		wg.Wait()
@@ -158,14 +168,30 @@ func loadConfig() *config.IpOptions {
 	// -i 识别 IP、IP段或IP区间
 	// 如：192.168.1.1 | 192.168.1.1/24 | 192.168.1.1-20
 	if config.IpInfo != "" {
-		result, err := identify.IpRange(config.IpInfo)
+
+		resultDomain, err := identify.DomainRegex(config.IpInfo)
 		if err != nil && config.Debug {
 			log.Println(err)
+		}
+		//ips = append(ips, resultDomain...)
+		ips.AddAll(resultDomain)
+
+		resultIp, err := identify.IpRange(config.IpInfo)
+		if err != nil && config.Debug {
+			log.Println(err)
+		}
+		//ips = append(ips, resultIp...)
+		ips.AddAll(resultIp)
+
+		if len(ips) <= 0 {
 			os.Exit(1)
 		}
-		ips = append(ips, result...)
 	}
-	ipOptions.Ips = ips
+	var ipsTmp []string
+	for ip, _ := range ips {
+		ipsTmp = append(ipsTmp, ip)
+	}
+	ipOptions.Ips = ipsTmp
 	return ipOptions
 }
 
