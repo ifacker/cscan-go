@@ -1,6 +1,6 @@
 module cscan
 
-go 1.20
+go 1.21
 
 require (
 	github.com/EDDYCJY/fake-useragent v0.2.0
@@ -13,7 +13,7 @@ require (
 	github.com/jlaffaye/ftp v0.1.0
 	github.com/stacktitan/smb v0.0.0-20190531122847-da9a425dceb8
 	golang.org/x/crypto v0.0.0-20220829220503-c86fa9a7ed90
-	golang.org/x/net v0.2.0
+	golang.org/x/net v0.5.0
 	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
 
 )
@@ -28,7 +28,7 @@ require (
 	github.com/onsi/ginkgo v1.16.5 // indirect
 	github.com/onsi/gomega v1.20.2 // indirect
 	github.com/xo/terminfo v0.0.0-20210125001918-ca9a967f8778 // indirect
-	golang.org/x/sys v0.2.0 // indirect
-	golang.org/x/text v0.4.0 // indirect
+	golang.org/x/sys v0.4.0 // indirect
+	golang.org/x/text v0.6.0 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
 )
