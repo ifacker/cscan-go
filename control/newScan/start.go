@@ -6,14 +6,11 @@ import (
 	"cscan/util/identify"
 	"cscan/util/view"
 	"fmt"
-	"github.com/gookit/color"
 	"github.com/ifacker/myutil"
 	"log"
 	"os"
 	"strconv"
 	"strings"
-	"sync"
-	"time"
 )
 
 // 加载输入的参数
@@ -124,27 +121,27 @@ func loadConfig() *config.IpOptions {
 
 	// -l 识别 IP 文件
 	if config.IpFilePath != "" {
-		c := make(chan bool)
+		//c := make(chan bool)
 		textb := file.ReadFile(config.IpFilePath)
 		texts := strings.Split(string(textb), "\n")
-		wg := &sync.WaitGroup{}
-		wg.Add(1)
+		//wg := &sync.WaitGroup{}
+		//wg.Add(1)
 		// 显示加载界面
-		go func(c chan bool) {
-			color.C256(226).Print("  Loading")
-		out:
-			for {
-				select {
-				case <-c:
-					break out
-				default:
-					color.C256(226).Print(".")
-					time.Sleep(1 * time.Second)
-				}
-			}
-			color.C256(226).Println("OK!\n")
-			wg.Done()
-		}(c)
+		//go func(c chan bool) {
+		//	color.C256(226).Print("  Loading")
+		//out:
+		//	for {
+		//		select {
+		//		case <-c:
+		//			break out
+		//		default:
+		//			color.C256(226).Print(".")
+		//			time.Sleep(1 * time.Second)
+		//		}
+		//	}
+		//	color.C256(226).Println("OK!\n")
+		//	wg.Done()
+		//}(c)
 		for _, text := range texts {
 			resultDomain, err := identify.DomainRegex(text)
 			if err != nil && config.Debug {
@@ -161,8 +158,8 @@ func loadConfig() *config.IpOptions {
 		if len(ips) <= 0 {
 			os.Exit(1)
 		}
-		c <- true
-		wg.Wait()
+		//c <- true
+		//wg.Wait()
 	}
 
 	// -i 识别 IP、IP段或IP区间

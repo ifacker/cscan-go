@@ -4,9 +4,11 @@ import (
 	"cscan/util/regex2"
 	"errors"
 	"fmt"
+	"github.com/gookit/color"
 	"net"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // IpRange 识别 IP 范围，如：192.168.1.1-20、192.168.1.1/24、192.168.1.1
@@ -63,7 +65,12 @@ func IpRange(srcIp string) ([]string, error) {
 				}
 			}
 
-			iptmp, ipnet, _ := net.ParseCIDR(ip)                                     // 解析IP段
+			iptmp, ipnet, err := net.ParseCIDR(ip) // 解析IP段
+			if err != nil {
+				color.C256(196).Printf("[!] IP: %s 存在异常，请及时处理！\n\n", ip)
+				time.Sleep(1500 * time.Millisecond)
+				return nil, errors.New(fmt.Sprintf("IP: %s 存在异常，请及时处理！", ip))
+			}
 			for iptmp := iptmp.Mask(ipnet.Mask); ipnet.Contains(iptmp); inc(iptmp) { // 通过掩码来遍历这个IP段
 				destIps = append(destIps, fmt.Sprintf("%s", iptmp))
 				//fmt.Println(ip)
