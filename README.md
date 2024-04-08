@@ -1,6 +1,6 @@
 # Cscan-Go 介绍
 
-<a href="https://github.com/ifacker/cscan-go/releases"><img src="https://img.shields.io/github/downloads/ifacker/cscan-go/total">
+<a href="https://github.com/ifacker/cscan-go/releases"><img src="https://img.shields.io/github/downloads/ifacker/cscan-go/total"> 
 <a href="https://github.com/ifacker/cscan-go/releases/"><img src="https://img.shields.io/github/v/release/ifacker/cscan-go.svg">
 
 
