@@ -6,11 +6,12 @@ import (
 	"cscan/util/identify"
 	"cscan/util/view"
 	"fmt"
-	"github.com/ifacker/myutil"
 	"log"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/ifacker/myutil"
 )
 
 // 加载输入的参数
@@ -99,7 +100,7 @@ func loadConfig() *config.IpOptions {
 		ports = uniq(ports)
 
 		// 测试代码：展示所有要扫描的端口
-		//fmt.Println(ports)
+		fmt.Printf(strings.ReplaceAll(strings.ReplaceAll(fmt.Sprintf("Port: %v %s", config.Ports, config.DefaultPorts), "[", ""), "]", ""))
 
 	} else if config.ForbidPorts != "" {
 		// 指定端口，并禁用默认端口扫描
@@ -107,7 +108,7 @@ func loadConfig() *config.IpOptions {
 		dfPort()
 
 		// 测试代码：展示所有要扫描的端口
-		fmt.Println(ports)
+		fmt.Printf("Port: %s", config.ForbidPorts)
 	} else {
 		// 未输入端口参数，使用默认端口
 		ports = config.Ports
