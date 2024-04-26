@@ -6,14 +6,14 @@ import (
 	"cscan/control/output"
 	"cscan/util/view"
 	"fmt"
-	browser "github.com/EDDYCJY/fake-useragent"
-	"github.com/antchfx/htmlquery"
-	"github.com/gookit/color"
-	"golang.org/x/net/html"
 	"log"
 	http2 "net/http"
 	"strings"
 	"sync"
+
+	"github.com/antchfx/htmlquery"
+	"github.com/gookit/color"
+	"golang.org/x/net/html"
 )
 
 // 获取关键信息 title
@@ -41,7 +41,7 @@ func reqfunc(url string) *config.WebInfo {
 	if err != nil && config.Debug {
 		log.Println(err)
 	}
-	req.Header.Set("User-Agent", browser.Chrome())
+	req.Header.Set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.0 Safari/537.36")
 	resp, err := client.Do(req)
 	if err != nil {
 		if config.Debug {
