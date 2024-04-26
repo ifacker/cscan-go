@@ -10,9 +10,33 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 
+	"github.com/gookit/color"
 	"github.com/ifacker/myutil"
 )
+
+// 懒加载 port
+var once sync.Once
+var startPorts []int
+
+func initPorts() {
+	portsTmp := strings.Split(config.Ports, ",")
+	for _, portstr := range portsTmp {
+		portInt, err := strconv.Atoi(strings.TrimSpace(portstr))
+		if err != nil {
+			color.Errorf("端口识别错误：%s", err)
+			os.Exit(1)
+		}
+		// startPorts = make([]int, 0)
+		startPorts = append(startPorts, portInt)
+	}
+}
+
+func GetPorts() []int {
+	once.Do(initPorts)
+	return startPorts
+}
 
 // 加载输入的参数
 func loadConfig() *config.IpOptions {
@@ -81,7 +105,8 @@ func loadConfig() *config.IpOptions {
 		dfPort()
 
 		// 添加默认端口
-		ports = append(ports, config.Ports...)
+		// ports = append(ports, config.Ports...)
+		ports = append(ports, GetPorts()...)
 
 		// 去重函数
 		uniq := func(s []int) []int {
@@ -111,7 +136,8 @@ func loadConfig() *config.IpOptions {
 		fmt.Printf("Port: %s", config.ForbidPorts)
 	} else {
 		// 未输入端口参数，使用默认端口
-		ports = config.Ports
+		// ports = config.Ports
+		ports = GetPorts()
 	}
 
 	ipOptions.Ports = ports
